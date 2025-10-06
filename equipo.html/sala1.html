@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Horario - Sala 1</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Colores de estado */
+    .estado.libre {
+      color: green;
+      font-weight: bold;
+    }
+    .estado.pendiente {
+      color: orange;
+      font-weight: bold;
+    }
+    .estado.ocupada {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1 class="titulo-principal">Horario - Sala 1</h1>
+    <nav class="menu">
+      <a class="enlace-menu" href="index.html">Inicio</a>
+      <a class="enlace-menu" href="contacto.html">Contacto</a>
+      <a class="enlace-menu" href="acerca.html">Acerca</a>
+    </nav>
+  </header>
+  
+  <main class="contenido">
+    <section class="horario">
+      <h2 class="titulo-seccion">Reservaciones de la Sala 1</h2>
+      <table class="tabla-horario">
+        <thead>
+          <tr>
+            <th>Horario</th>
+            <th>Usuario</th>
+            <th>Tipo</th>
+            <th>Estado</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>08:00 - 10:00</td>
+            <td></td>
+            <td></td>
+            <td class="estado libre">Libre</td>
+            <td><button class="limpiar">Liberar</button></td>
+          </tr>
+          <tr>
+            <td>10:30 - 12:30</td>
+            <td></td>
+            <td></td>
+            <td class="estado libre">Libre</td>
+            <td><button class="limpiar">Liberar</button></td>
+          </tr>
+          <tr>
+            <td>14:00 - 16:00</td>
+            <td></td>
+            <td></td>
+            <td class="estado libre">Libre</td>
+            <td><button class="limpiar">Liberar</button></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Aquí se insertará el formulario -->
+      <div id="formulario-sala1"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2023 Organizador de Salas. Todos los derechos reservados.</p>
+  </footer>
+
+  <!-- Script para manejar el registro -->
+  <script>
+    const contenedorFormulario = document.getElementById("formulario-sala1");
+
+    // Crear formulario de registro
+    const formulario = document.createElement("form");
+    formulario.innerHTML = `
+      <h3>Registrar usuario en un horario disponible</h3>
+      <label for="usuario">Usuario:</label>
+      <input type="text" id="usuario" name="usuario" required>
+      <label for="tipo">Tipo:</label>
+      <select id="tipo" name="tipo" required>
+        <option value="Profesor">Profesor</option>
+        <option value="Ayudante">Ayudante</option>
+        <option value="Estudiante">Estudiante</option>
+      </select>
+      <label for="horario">Horario:</label>
+      <select id="horario" name="horario" required>
+        <option value="08:00 - 10:00">08:00 - 10:00</option>
+        <option value="10:30 - 12:30">10:30 - 12:30</option>
+        <option value="14:00 - 16:00">14:00 - 16:00</option>
+      </select>
+      <button type="submit">Registrar</button>
+    `;
+
+    // Manejar envío del formulario
+    formulario.onsubmit = (e) => {
+      e.preventDefault();
+      const usuario = document.getElementById("usuario").value;
+      const tipo = document.getElementById("tipo").value;
+      const horario = document.getElementById("horario").value;
+
+      // Buscar la fila correspondiente al horario
+      const filas = document.querySelectorAll(".tabla-horario tbody tr");
+      filas.forEach(fila => {
+        if (fila.cells[0].textContent === horario) {
+          fila.cells[1].textContent = usuario;
+          fila.cells[2].textContent = tipo;
+
+          // Estado pendiente (amarillo)
+          const estado = fila.querySelector(".estado");
+          estado.textContent = "Pendiente";
+          estado.className = "estado pendiente";
+        }
+      });
+
+      // Resetear formulario
+      formulario.reset();
+    };
+
+    // Funcionalidad de botones de limpiar
+    const botonesLimpiar = document.querySelectorAll(".limpiar");
+    botonesLimpiar.forEach(boton => {
+      boton.addEventListener("click", () => {
+        const fila = boton.closest("tr");
+        fila.cells[1].textContent = ""; // Usuario
+        fila.cells[2].textContent = ""; // Tipo
+
+        // Estado libre (verde)
+        const estado = fila.querySelector(".estado");
+        estado.textContent = "Libre";
+        estado.className = "estado libre";
+      });
+    });
+
+    contenedorFormulario.appendChild(formulario);
+  </script>
+</body>
+</html>
