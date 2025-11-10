@@ -82,8 +82,10 @@
   <script>
     // Nuevo Script para manejar el registro con API
 const contenedorFormulario = document.getElementById("formulario-sala1");
-const SALA_ID = 1; // Definimos el ID de esta página
-const API_URL = `http://localhost:3000/api/reservas/${SALA_ID}`;
+// Dentro del script de sala1.html
+const SALA_ID = 1; 
+const API_URL = `http://localhost:3000/api/reservas/${SALA_ID}`; // -> /api/reservas/1
+// ...
 // --- Funciones de Lógica del Front-end ---
 
 // 1. Función para actualizar la tabla (Cargando datos desde la API)
@@ -233,6 +235,7 @@ cargarReservas(); // Cargar los datos al abrir la página
   </script>
 </body>
 </html>
+
 
 
 
