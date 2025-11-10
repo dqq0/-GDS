@@ -17,13 +17,23 @@ app.use(express.json());
 
 const leerReservas = () => {
     try {
+        // 1. Asegurarse de que el archivo existe
         if (fs.existsSync(DB_FILE)) {
-            const data = fs.readFileSync(DB_FILE, 'utf8');
+            // 2. Leer el archivo especificando la codificación
+            const data = fs.readFileSync(DB_FILE, 'utf8'); 
+            
+            // 3. Devolver un array vacío si el archivo existe pero está vacío (previene error de JSON.parse)
+            if (!data.trim()) {
+                return []; 
+            }
+            
             return JSON.parse(data);
         }
+        // 4. Si el archivo no existe, simplemente devolver un array vacío
         return []; 
     } catch (error) {
-        console.error("Error al leer reservas:", error);
+        // MUY IMPORTANTE: Imprimir este error en la consola del servidor
+        console.error("CRITICAL CODE ERROR: Fallo al leer y parsear reservas.json:", error.message);
         return []; 
     }
 };
@@ -111,3 +121,4 @@ app.listen(PORT, () => {
     console.log(`Servidor API corriendo en http://localhost:${PORT}`);
     console.log(`Rutas de la API: /api/reservas/:salaId`);
 });
+
