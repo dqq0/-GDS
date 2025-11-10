@@ -163,14 +163,14 @@ a:hover {
 }
 .footer
 {
-  margin-top: 35px;
-  padding: 20px;
-  border: 2px solid var(--color-accent-green);
-  border-radius: var(--radius);
-  background-color: rgba(197, 194, 194, 0);
-  font-size: 17px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
-  transition: var(--transition);
+    background-color: var(--color-primary);
+  color: rgb(255, 255, 255);
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  
 }
 /* ============================
     ANIMACIONES
@@ -179,6 +179,7 @@ a:hover {
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
 
 
 
