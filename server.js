@@ -41,9 +41,10 @@ const leerReservas = () => {
 const guardarReservas = (reservas) => {
     try {
         fs.writeFileSync(DB_FILE, JSON.stringify(reservas, null, 2), 'utf8');
+        
     } catch (error) {
-        console.error("Error al guardar reservas:", error);
-    }
+        
+        console.error("ERROR CRÍTICO: Fallo al guardar en reservas.json:", error);
 };
 
 // --- Rutas Dinámicas ---
@@ -121,4 +122,5 @@ app.listen(PORT, () => {
     console.log(`Servidor API corriendo en http://localhost:${PORT}`);
     console.log(`Rutas de la API: /api/reservas/:salaId`);
 });
+
 
