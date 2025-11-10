@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Horario - Sala 304</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Colores de estado */
+    .estado.libre {
+      color: green;
+      font-weight: bold;
+    }
+    .estado.pendiente {
+      color: orange;
+      font-weight: bold;
+    }
+    .estado.ocupada {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1 class="titulo-principal">Horario - Sala 304</h1>
+    <nav class="menu">
+      <a class="enlace-menu" href="index.html">Inicio</a>
+      <a class="enlace-menu" href="contacto.html">Contacto</a>
+      <a class="enlace-menu" href="acerca.html">Acerca</a>
+    </nav>
+  </header>
+  
+  <main class="contenido">
+    <section class="horario">
+      <h2 class="titulo-seccion">Reservaciones de la Sala 304</h2>
+      <table class="tabla-horario">
+        <thead>
+          <tr>
+            <th>Horario</th>
+            <th>Usuario</th>
+            <th>Tipo</th>
+            <th>Estado</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>08:00 - 10:00</td>
+            <td></td>
+            <td></td>
+            <td class="estado libre">Libre</td>
+            <td><button class="limpiar">Liberar</button></td>
+          </tr>
+          <tr>
+            <td>10:30 - 12:30</td>
+            <td></td>
+            <td></td>
+            <td class="estado libre">Libre</td>
+            <td><button class="limpiar">Liberar</button></td>
+          </tr>
+          <tr>
+            <td>14:00 - 16:00</td>
+            <td></td>
+            <td></td>
+            <td class="estado libre">Libre</td>
+            <td><button class="limpiar">Liberar</button></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Aquí se insertará el formulario -->
+      <div id="formulario-sala1"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 Organizador de Salas. Todos los derechos reservados.</p>
+  </footer>
+
+  <!-- Script para manejar el registro -->
+  <script>
+    // Nuevo Script para manejar el registro con API
+const contenedorFormulario = document.getElementById("formulario-sala1");
+const SALA_ID = 1; // Definimos el ID de esta página
+const API_URL = `http://localhost:3000/api/reservas/${SALA_ID}`;
+// --- Funciones de Lógica del Front-end ---
+
+// 1. Función para actualizar la tabla (Cargando datos desde la API)
+const actualizarTabla = (reservas) => {
+    const filas = document.querySelectorAll(".tabla-horario tbody tr");
+    
+    filas.forEach(fila => {
+        const horarioFila = fila.cells[0].textContent;
+        // Intentamos encontrar una reserva para el horario actual
+        const reservaEncontrada = reservas.find(r => r.horario === horarioFila);
+        
+        const botonLiberar = fila.querySelector(".limpiar");
+
+        if (reservaEncontrada) {
+            // Caso: Horario Ocupado/Pendiente (hay reserva en la API)
+            fila.cells[1].textContent = reservaEncontrada.usuario;
+            fila.cells[2].textContent = reservaEncontrada.tipo;
+            
+            const estadoCell = fila.cells[3];
+            estadoCell.textContent = reservaEncontrada.estado;
+            estadoCell.className = `estado ${reservaEncontrada.estado.toLowerCase()}`;
+            
+            // Adjuntar el ID de la reserva al botón para usarlo al eliminar
+            botonLiberar.style.display = 'inline-block';
+            botonLiberar.setAttribute('data-reserva-id', reservaEncontrada.id);
+
+        } else {
+            // Caso: Horario Libre (no hay reserva en la API)
+            fila.cells[1].textContent = "";
+            fila.cells[2].textContent = "";
+            
+            const estadoCell = fila.cells[3];
+            estadoCell.textContent = "Libre";
+            estadoCell.className = "estado libre";
+
+            // Ocultar o deshabilitar el botón de liberar
+            botonLiberar.style.display = 'none';
+            botonLiberar.removeAttribute('data-reserva-id');
+        }
+    });
+}
+
+// 2. Función para cargar las reservas al iniciar la página
+const cargarReservas = async () => {
+    try {
+        const response = await fetch(API_URL);
+        if (response.ok) {
+            const reservas = await response.json();
+            actualizarTabla(reservas);
+        } else {
+            console.error("No se pudieron cargar las reservas.");
+        }
+    } catch (error) {
+        console.error('Error al cargar reservas:', error);
+    }
+}
+
+
+// --- Lógica del Formulario y Botones ---
+
+// Crear formulario de registro
+const formulario = document.createElement("form");
+formulario.innerHTML = `
+    <h3>Registrar usuario en un horario disponible</h3>
+    <label for="usuario">Usuario:</label>
+    <input type="text" id="usuario" name="usuario" required>
+    <label for="tipo">Tipo:</label>
+    <select id="tipo" name="tipo" required>
+        <option value="Profesor">Profesor</option>
+        <option value="Ayudante">Ayudante</option>
+        <option value="Estudiante">Estudiante</option>
+    </select>
+    <label for="horario">Horario:</label>
+    <select id="horario" name="horario" required>
+        <option value="08:00 - 10:00">08:00 - 10:00</option>
+        <option value="10:30 - 12:30">10:30 - 12:30</option>
+        <option value="14:00 - 16:00">14:00 - 16:00</option>
+    </select>
+    <button type="submit">Registrar</button>
+`;
+
+// 3. Manejar Envío del Formulario (Petición POST a la API)
+formulario.onsubmit = async (e) => {
+    e.preventDefault();
+    const usuario = document.getElementById("usuario").value;
+    const tipo = document.getElementById("tipo").value;
+    const horario = document.getElementById("horario").value;
+
+    const datosReserva = { usuario, tipo, horario };
+
+    try {
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(datosReserva),
+        });
+
+        if (response.ok) {
+            alert("Reserva registrada con éxito.");
+            formulario.reset();
+            cargarReservas(); // Volver a cargar la tabla
+        } else {
+            const errorData = await response.json();
+            alert(`Error al registrar: ${errorData.error || response.statusText}`);
+        }
+    } catch (error) {
+        console.error('Error de red:', error);
+        alert("Hubo un error al conectar con el servidor.");
+    }
+};
+
+// 4. Funcionalidad de botones de limpiar (Petición DELETE a la API)
+const botonesLimpiar = document.querySelectorAll(".limpiar");
+botonesLimpiar.forEach(boton => {
+    boton.addEventListener("click", async () => {
+        const reservaId = boton.getAttribute('data-reserva-id');
+
+        if (!reservaId) {
+            alert("Error: No se encontró el ID de la reserva para liberar.");
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_URL}/${reservaId}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                alert("Reserva liberada con éxito.");
+                cargarReservas(); // Volver a cargar la tabla
+            } else {
+                alert("Error al liberar la sala.");
+            }
+        } catch (error) {
+            console.error('Error de red:', error);
+            alert("Hubo un error al conectar con el servidor.");
+        }
+    });
+});
+
+
+// Inicialización
+contenedorFormulario.appendChild(formulario);
+cargarReservas(); // Cargar los datos al abrir la página
+
+    contenedorFormulario.appendChild(formulario);
+  </script>
+</body>
+</html>
