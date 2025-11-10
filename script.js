@@ -13,16 +13,24 @@ const botonesSala = document.querySelectorAll(".boton-sala");
 const infoSala = document.getElementById("info-sala");
 
 // Manejar clic en los botones de sala
+// script.js (SOLUCIÓN FINAL para la redirección de los 4 botones)
+
+// Selección de botones
+const botonesSala = document.querySelectorAll(".boton-sala");
+
+// Manejar clic en los botones de sala
 botonesSala.forEach((boton) => {
   boton.addEventListener("click", () => {
     const salaId = boton.getAttribute("data-sala");
 
     if (salaId) {
-      // LÓGICA DE REDIRECCIÓN APLICADA A LOS 4 BOTONES
+      // Redirección Universal: Construye la URL dinámicamente.
       window.location.href = `sala${salaId}.html`;
     } else {
-      console.error("Error: El botón no tiene el atributo data-sala.");
+      console.error("Error de configuración: El botón no tiene el atributo data-sala.");
     }
+  });
+});
 
 // Función para mostrar información de la sala
 function mostrarInfoSala(salaId) {
@@ -68,6 +76,7 @@ function mostrarFormulario(salaId) {
   // Manejar el envío del formulario
   formulario.onsubmit = (e) => {
     e.preventDefault();
+
 
 
 
