@@ -14,18 +14,15 @@ const infoSala = document.getElementById("info-sala");
 
 // Manejar clic en los botones de sala
 botonesSala.forEach((boton) => {
-  boton.addEventListener("click", () => {
-    const salaId = boton.getAttribute("data-sala");
+  boton.addEventListener("click", () => {
+    const salaId = boton.getAttribute("data-sala");
 
-    if (salaId === "1") {
-      // LÓGICA ORIGINAL: Redirigir a sala1.html para la Sala 1
-      window.location.href = "sala1.html";
-    } else {
-      // LÓGICA ORIGINAL: Mostrar información local para el resto de salas
-      mostrarInfoSala(salaId);
-    }
-  });
-});
+    if (salaId) {
+      // LÓGICA DE REDIRECCIÓN APLICADA A LOS 4 BOTONES
+      window.location.href = `sala${salaId}.html`;
+    } else {
+      console.error("Error: El botón no tiene el atributo data-sala.");
+    }
 
 // Función para mostrar información de la sala
 function mostrarInfoSala(salaId) {
@@ -71,6 +68,7 @@ function mostrarFormulario(salaId) {
   // Manejar el envío del formulario
   formulario.onsubmit = (e) => {
     e.preventDefault();
+
 
 
 
