@@ -84,7 +84,7 @@
 const contenedorFormulario = document.getElementById("formulario-sala1");
 // Dentro del script de sala1.html
 const SALA_ID = 1; 
-const API_URL = `http://localhost:3000/api/reservas/${SALA_ID}`; // -> /api/reservas/1
+const API_URL = `http://localhost:3000/api/reservas/sala${SALA_ID}.html`; // -> /api/reservas/1
 // ...
 // --- Funciones de Lógica del Front-end ---
 
@@ -235,6 +235,7 @@ cargarReservas(); // Cargar los datos al abrir la página
   </script>
 </body>
 </html>
+
 
 
 
