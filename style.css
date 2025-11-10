@@ -161,17 +161,6 @@ a:hover {
     font-size: 16px;
   }
 }
-.footer
-{
-    background-color: var(--color-primary);
-  color: rgb(255, 255, 255);
-  padding: 15px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  
-}
 /* ============================
     ANIMACIONES
    ============================ */
@@ -179,6 +168,7 @@ a:hover {
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
 
 
 
