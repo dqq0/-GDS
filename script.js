@@ -11,19 +11,23 @@ const botonesSala = document.querySelectorAll(".boton-sala");
 const infoSala = document.getElementById("info-sala");
 
 // Manejar clic en los botones de sala
-botonesSala.forEach((boton) => {
-  boton.addEventListener("click", () => {
-    const salaId = boton.getAttribute("data-sala");
+// script.js (Lógica de Redirección Corregida)
 
-    if (salaId === "1") {
-      // Redirigir a sala1.html cuando se presiona Sala 1
-      window.location.href = "sala1.html";
-    } else {
-      // Mantener la lógica actual para otras salas
-      mostrarInfoSala(salaId);
-    }
-  });
+const botonesSala = document.querySelectorAll(".boton-sala");
+const infoSala = document.getElementById("info-sala");
+
+botonesSala.forEach((boton) => {
+    boton.addEventListener("click", () => {
+        const salaId = boton.getAttribute("data-sala");
+        
+        
+        window.location.href = `sala${salaId}.html`; 
+    });
 });
+
+// Nota: Puedes eliminar las funciones 'mostrarInfoSala', 'mostrarFormulario', 
+// y 'agregarBotonLimpiar' del script.js si planeas que TODAS las salas 
+// se gestionen a través de sus archivos HTML dedicados (salaX.html).
 
 // Función para mostrar información de la sala
 function mostrarInfoSala(salaId) {
@@ -105,3 +109,4 @@ function agregarBotonLimpiar(salaId) {
     mostrarInfoSala(salaId);
   });
 }
+
