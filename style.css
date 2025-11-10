@@ -161,20 +161,6 @@ a:hover {
     font-size: 16px;
   }
 }
-
-.footer
- {
-  --color-primary:brown;
-  --color-primary-dark: #d33d26;
-  --color-secondary: #060606;
-  --color-accent-green: #b81b18;
-  --color-accent-red: #23ac41;
-  --color-bg: #f7f4f4;
-  --color-text: #000000;
-  --radius: 10px;
-  --transition: 0.3s ease;
-}
-
 /* ============================
     ANIMACIONES
    ============================ */
@@ -182,5 +168,6 @@ a:hover {
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
 
 
